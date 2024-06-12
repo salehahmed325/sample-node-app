@@ -14,7 +14,7 @@ pipeline {
                 }
             }
         }
-        stage('Login to staging server'){
+        stage('Deploy on minikube'){
             steps {
                 sshagent(['login_to_212']) {
                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/pods.yml services.yml saleh@192.168.0.212:/home/saleh/'
