@@ -25,7 +25,9 @@ pipeline {
 		stage('Login to staging server') {
             steps {
                 sshagent(['login_to_212']) {
-                     sh 'ssh -o StrictHostKeyChecking=no saleh@192.168.0.212 kubectl apply -f .'
+                     sh 'ssh -o StrictHostKeyChecking=no saleh@192.168.0.212'
+                     sh 'kubectl apply -f pods.yml'
+                     sh 'kubectl apply -f services.yml'
                     }
             }
         }
