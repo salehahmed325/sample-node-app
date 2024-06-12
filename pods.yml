@@ -13,7 +13,7 @@ spec:
         app: nodeapp
     spec:
       containers:
-       - name: nodeapp
+      - name: nodeapp
         image: nodeapp:${IMAGE_TAG}
         valueFrom:
           fieldRef:
