@@ -1,20 +1,23 @@
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: nodeapp
-spec:
-  replicas: 1
-  selector:
-    matchLabels:
-      app: nodeapp
-  template:
-    metadata:
-      labels:
-        app: nodeapp
-    spec:
-      containers:
-      - name: nodeapp
-        image: salehahmed325/nodeapp:v1
-        ports:
-        - containerPort: 8080
-      restartPolicy: Always
+# Use a lighter base image
+FROM node:16-alpine
+
+# Create and set the working directory
+WORKDIR /usr/src/app
+
+# Install app dependencies
+COPY package*.json ./
+RUN npm install --production
+
+# Bundle app source
+COPY . .
+
+# Install pm2 globally and clean up
+RUN npm install -g pm2 && \
+    npm cache clean --force && \
+    rm -rf /tmp/*
+
+# Expose the port
+EXPOSE 3000
+
+# Start the application using pm2
+CMD ["pm2", "start", "server.js", "--watch"]

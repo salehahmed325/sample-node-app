@@ -1,17 +1,21 @@
-FROM node:16
+FROM node:16-alpine
 
 # Create app directory
 WORKDIR /usr/src/app
 
 # Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
 COPY package*.json ./
+
 RUN npm install
+# If you are building your code for production
+# RUN npm install --only=production
 
 # Bundle app source
 COPY . .
 
-# Install pm2
-RUN npm install -g pm2
+EXPOSE 8080
+CMD [ "npm", "start" ]
 
-# Run pm2 to start the application
-CMD ["pm2", "start", "server.js", "--watch"]
+# This is dummy change for git demo
