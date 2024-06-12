@@ -17,4 +17,3 @@ spec:
         image: salehahmed325/nodeapp:v1
         ports:
         - containerPort: 8080
-      restartPolicy: Always

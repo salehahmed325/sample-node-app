@@ -14,4 +14,4 @@ COPY . .
 RUN npm install -g pm2
 
 # Run pm2 to start the application
-CMD ["node", "server.js"]
+CMD ["pm2", "start", "server.js", "--watch"]
