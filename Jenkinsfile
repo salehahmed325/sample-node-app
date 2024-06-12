@@ -26,16 +26,11 @@ pipeline {
             steps {
                 sshagent(['login_to_212']) {
                     sh 'cp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/pods.yml services.yml saleh@192.168.0.212:/home/saleh/'
-                    sh """
-                        ssh saleh@192.168.0.212 kubectl apply -f.
-                    """, returnStatus: true
                 }
-                script {
-                    if (status!= 0) {
-                        sh """
-                            ssh saleh@192.168.0.212 kubectl create -f.
-                        """
-                    }
+                try{
+                    sh "ssh saleh@192.168.0.212 kubectl apply -f."
+                } catch (error) {
+                    sh "ssh saleh@192.168.0.212 kubectl create -f."
                 }
             }
         }
