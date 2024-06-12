@@ -14,9 +14,9 @@ spec:
     spec:
       containers:
       - name: nodeapp
+        env:
+        - name: IMAGE_TAG
+          value: "${GIT_COMMIT}"
         image: nodeapp:${IMAGE_TAG}
-        valueFrom:
-          fieldRef:
-          fieldPath: metadata.labels['IMAGE_TAG']
         ports:
         - containerPort: 8080
