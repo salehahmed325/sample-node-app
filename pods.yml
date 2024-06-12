@@ -14,6 +14,6 @@ spec:
     spec:
       containers:
       - name: nodeapp
-        image: nodeapp/nodeapp:v1
+        image: salehahmed325/nodeapp:v1
         ports:
         - containerPort: 8080
