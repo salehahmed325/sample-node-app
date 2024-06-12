@@ -22,6 +22,11 @@ pipeline {
                 }
             }
         }
+        stage('Remove Docker Image'){
+            steps{
+                sh "docker rmi salehahmed325/nodeapp:v1 "
+            }
+        }
     }
 }
 
