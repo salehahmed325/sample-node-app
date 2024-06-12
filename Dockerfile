@@ -8,7 +8,7 @@ COPY package*.json./
 RUN npm install
 
 # Bundle app source
-COPY..
+COPY . .
 
 # Install pm2
 RUN npm install -g pm2
