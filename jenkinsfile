@@ -4,23 +4,28 @@ pipeline {
         DOCKER_TAG = getDockerTag()
     }
     stages{
+        stage('SCM Checkout'){
+            steps{
+                git branch: 'main', url: 'https://github.com/salehahmed325/sample-node-app.git'
+            }
+        }
         stage('Build Docker Image'){
             steps{
-                sh "docker build . -t mdrajibkhan/nodeapp:${DOCKER_TAG} "
+                sh "docker build . -t salehahmed325/nodeapp:${DOCKER_TAG} "
             }
         }
 		stage('Push Image to Docker Hub'){
 			steps{
 				withCredentials([string(credentialsId: 'dockerhubPWD', variable: 'dockerhubPWD')]) {
-					sh "docker login -u mdrajibkhan -p ${dockerhubPWD}"
-					sh "docker push mdrajibkhan/nodeapp:${DOCKER_TAG}"
+					sh "docker login -u salehahmed325 -p ${dockerhubPWD}"
+					sh "docker push salehahmed325/nodeapp:${DOCKER_TAG}"
 				}
 			}
 		}
-		stage('Login to stating server') {
+		stage('Login to staging server') {
             steps {
-                sshagent(['login-to-minikube']) {
-                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@192.168.0.120 kubectl apply -f .'
+                sshagent(['login_to_212']) {
+                     sh 'ssh -o StrictHostKeyChecking=no saleh@192.168.0.212 kubectl apply -f .'
                     }
             }
         }
