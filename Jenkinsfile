@@ -1,24 +1,19 @@
 pipeline {
     agent any
-    environment{
-        DOCKER_TAG = getDockerTag()
+    environment {
+        IMAGE_TAG = "${GIT_COMMIT}"
     }
     stages{
-        stage('SCM Checkout'){
-            steps{
-                git branch: 'main', url: 'https://github.com/salehahmed325/sample-node-app.git'
-            }
-        }
         stage('Build Docker Image'){
             steps{
-                sh "docker build . -t salehahmed325/nodeapp:${DOCKER_TAG} "
+                sh "docker build . -t salehahmed325/nodeapp:${IMAGE_TAG} "
             }
         }
         stage('Push Image to Docker Hub'){
             steps{
                 withCredentials([string(credentialsId: 'dockerhubcred', variable: 'dockerhubcred')]) {
                     sh "docker login -u salehahmed325 -p ${dockerhubcred}"
-                    sh "docker push salehahmed325/nodeapp:${DOCKER_TAG}"
+                    sh "docker push salehahmed325/nodeapp:${IMAGE_TAG}"
                 }
             }
         }
