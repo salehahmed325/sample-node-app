@@ -17,8 +17,9 @@ pipeline {
         stage('Deploy on minikube'){
             steps {
                 sshagent(['login_to_212']) {
-                    sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/pods.yml services.yml saleh@192.168.0.212:/home/saleh/'
-                    sh "ssh saleh@192.168.0.212 kubectl -n dev apply -f ."
+                    sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/deployment.yml services.yml saleh@192.168.0.212:/home/saleh/'
+                    sh 'ssh saleh@192.168.0.212 kubectl -n dev apply -f .'
+                    sh 'rm deployment.yml service.yml'
                 }
             }
         }
