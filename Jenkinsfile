@@ -31,7 +31,7 @@ pipeline {
                     """, returnStatus: true
                 }
                 script {
-                    if ( $?!= 0 ) {
+                    if (status!= 0) {
                         sh """
                             ssh saleh@192.168.0.212 kubectl create -f.
                         """
