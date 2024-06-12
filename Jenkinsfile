@@ -25,7 +25,7 @@ pipeline {
 		stage('Login to staging server') {
             steps {
                 sshagent(['login_to_212']) {
-                     sh 'ssh -o StrictHostKeyChecking=no saleh@192.168.0.212 kubectl apply -f pods.yml'
+                     sh 'scp -o StrictHostKeyChecking=no var/lib/jenkins/workspace/samplenode-app/pods.yml services.yml saleh@192.168.0.212:/home/saleh/'
                     }
             }
         }
