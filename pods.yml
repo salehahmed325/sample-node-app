@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: nodeapp
 spec:
-  replicas: 3
+  replicas: 1
   selector:
     matchLabels:
       app: nodeapp
@@ -14,9 +14,6 @@ spec:
     spec:
       containers:
       - name: nodeapp
-        env:
-        - name: IMAGE_TAG
-          value: "${GIT_COMMIT}"
-        image: nodeapp:${IMAGE_TAG}
+        image: nodeapp/nodeapp:v1
         ports:
         - containerPort: 8080
