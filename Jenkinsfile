@@ -14,7 +14,7 @@ pipeline {
                 }
             }
         }
-        stage('Deploy on minikube'){
+        stage('Deploy on k8s'){
             steps {
                 sshagent(['login_to_213']) {
                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/deployment.yml services.yml saleh@192.168.0.213:/home/saleh/'
