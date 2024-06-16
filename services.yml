@@ -21,6 +21,5 @@ spec:
   ports:
   - port: 80
     targetPort: 8080
-    nodePort: 30000    # This is the port through which your service will be accessible externally
   selector:
     app: nodejs-app
