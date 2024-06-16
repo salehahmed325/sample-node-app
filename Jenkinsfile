@@ -48,7 +48,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest"
+                    sh "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG}
                 }
             }
         }
@@ -58,7 +58,6 @@ pipeline {
                     script {
                         sh "docker login -u salehahmed325 -p ${dockerhubcred}"
                         sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                        sh "docker push ${DOCKER_IMAGE}:latest"
                     }
                 }
             }
@@ -75,7 +74,6 @@ pipeline {
             steps {
                 script {
                     sh "docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG}"
-                    sh "docker rmi ${DOCKER_IMAGE}:latest"
                 }
             }
         }
