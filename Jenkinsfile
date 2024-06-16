@@ -120,6 +120,7 @@ pipeline {
             steps {
                 script {
                     sh "sed 's|PLACEHOLDER_TAG|${DOCKER_TAG}|g' deployment.yml > updated_deployment.yml"
+                    sh "cat updated_deployment.yml" // Debug: Check the contents of the updated file
                 }
             }
         }
