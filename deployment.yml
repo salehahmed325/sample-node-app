@@ -15,5 +15,6 @@ spec:
       containers:
       - name: nodejs-app
         image: salehahmed325/nodeapp:v1
+        imagePullPolicy: Always
         ports:
         - containerPort: 8080
