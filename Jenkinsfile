@@ -3,14 +3,14 @@ pipeline {
     stages{
         stage('Build Docker Image'){
             steps{
-                sh "docker build . -t salehahmed325/nodeapp:v1 "
+                sh "docker build . -t salehahmed325/nodeapp:${{ github.sha }}"
             }
         }
         stage('Push Image to Docker Hub'){
             steps{
                 withCredentials([string(credentialsId: 'dockerhubcred', variable: 'dockerhubcred')]) {
                     sh "docker login -u salehahmed325 -p ${dockerhubcred}"
-                    sh "docker push salehahmed325/nodeapp:v1"
+                    sh "docker push salehahmed325/nodeapp:${{ github.sha }}"
                 }
             }
         }
