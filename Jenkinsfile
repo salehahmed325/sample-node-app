@@ -19,7 +19,6 @@ pipeline {
                 sshagent(['login_to_213']) {
                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/deployment.yml services.yml saleh@192.168.0.213:/home/saleh/'
                     sh 'ssh saleh@192.168.0.213 kubectl -n dev apply -f .'
-                    sh 'ssh saleh@192.168.0.213 rm deployment.yml services.yml'
                 }
             }
         }
