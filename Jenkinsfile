@@ -128,7 +128,6 @@ pipeline {
             steps {
                 sshagent(['login_to_213']) {
                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/updated_deployment.yml services.yml saleh@192.168.0.213:/home/saleh/'
-                    sh "ssh saleh@192.168.0.213 sed -i 's|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${DOCKER_TAG}|' /home/saleh/updated_deployment.yml"
                     sh 'ssh saleh@192.168.0.213 kubectl -n dev apply -f .'
                 }
             }
