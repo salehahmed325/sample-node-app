@@ -116,6 +116,13 @@ pipeline {
                 }
             }
         }
+        stage('Prepare Deployment File') {
+            steps {
+                script {
+                    sh "sed 's|PLACEHOLDER_TAG|${DOCKER_TAG}|g' deployment.yml > updated_deployment.yml"
+                }
+            }
+        }
         stage('Deploy on k8s') {
             steps {
                 sshagent(['login_to_213']) {
