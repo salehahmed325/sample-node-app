@@ -36,6 +36,60 @@
 //     return tag.trim() // trim the output to remove trailing newline
 // }
 
+// pipeline {
+//     agent any
+
+//     environment {
+//         DOCKER_IMAGE = "salehahmed325/nodeapp"
+//         DOCKER_TAG = getDockerTag()
+//     }
+
+//     stages {
+//         stage('Build Docker Image') {
+//             steps {
+//                 script {
+//                     sh "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG} -t ${DOCKER_IMAGE}:latest"
+//                 }
+//             }
+//         }
+//         stage('Push Image to Docker Hub') {
+//             steps {
+//                 withCredentials([string(credentialsId: 'dockerhubcred', variable: 'dockerhubcred')]) {
+//                     script {
+//                         sh "docker login -u salehahmed325 -p ${dockerhubcred}"
+//                         sh "docker push ${DOCKER_IMAGE}:${DOCKER_TAG}"
+//                         sh "docker push ${DOCKER_IMAGE}:latest"
+//                     }
+//                 }
+//             }
+//         }
+//         stage('Deploy on k8s') {
+//             steps {
+//                 sshagent(['login_to_213']) {
+//                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/deployment.yml services.yml saleh@192.168.0.213:/home/saleh/'
+//                     sh 'ssh saleh@192.168.0.213 kubectl -n dev apply -f /home/saleh/deployment.yml'
+//                 }
+//             }
+//         }
+//         stage('Remove Docker Image') {
+//             steps {
+//                 script {
+//                     sh "docker rmi ${DOCKER_IMAGE}:${DOCKER_TAG}"
+//                     sh "docker rmi ${DOCKER_IMAGE}:latest"
+//                 }
+//             }
+//         }
+//     }
+// }
+
+// def getDockerTag() {
+//     return sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
+// }
+
+
+
+
+
 pipeline {
     agent any
 
@@ -48,7 +102,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    sh "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG}
+                    sh "docker build . -t ${DOCKER_IMAGE}:${DOCKER_TAG}"
                 }
             }
         }
@@ -66,6 +120,7 @@ pipeline {
             steps {
                 sshagent(['login_to_213']) {
                     sh 'scp -o StrictHostKeyChecking=no /var/lib/jenkins/workspace/nodeapp-pipeline/deployment.yml services.yml saleh@192.168.0.213:/home/saleh/'
+                    sh "ssh saleh@192.168.0.213 sed -i 's|image: ${DOCKER_IMAGE}:.*|image: ${DOCKER_IMAGE}:${DOCKER_TAG}|' /home/saleh/deployment.yml"
                     sh 'ssh saleh@192.168.0.213 kubectl -n dev apply -f /home/saleh/deployment.yml'
                 }
             }
@@ -82,4 +137,4 @@ pipeline {
 
 def getDockerTag() {
     return sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
-}
+}q
